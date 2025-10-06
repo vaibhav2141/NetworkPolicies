@@ -1,0 +1,10 @@
+# Deny all Traffic to Frontend Pods.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+ name: deny-all-frontend
+ namespace: frontend-ns
+spec:
+ podSelector: {} # applies to all frontend pods
+ policyTypes:
+ - Ingress
