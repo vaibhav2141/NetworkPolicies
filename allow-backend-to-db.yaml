@@ -1,19 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata: 
-  name: allow-backend-to-db
-  namespace: database-ns
-spec: 
-  podSelector: 
-    matchLabels:
-      app: database
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    - namespaceSelector: 
-        matchLabels:
-          name: backend-ns
-    ports:
-    - protocol: TCP
-      port: 3306
+metadata:
+ name: allow-backend-only
+ namespace: database-ns
+spec:
+ podSelector: {} # applies to all database pods
+ policyTypes:
+ - Ingress
+ ingress:
+ - from:
+ - namespaceSelector:
+ matchLabels:
+ name: backend-ns # allow traffic only from backend namespace
+ podSelector:
+ matchLabels:
+ app: backend # allow traffic only from backend pods
