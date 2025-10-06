@@ -1,19 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
-metadata: 
-  name: allow-frontend-to-backend
-  namespace: backend-ns
+metadata:
+ name: allow-frontend-only
+ namespace: backend-ns
 spec:
-  podSelector:
-    matchLabels:
-      app: backend
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: frontend-ns
-    ports:
-    - protocol: TCP
-      port: 80
+ podSelector: {} # applies to all backend pods
+ policyTypes:
+ - Ingress
+ ingress:
+ - from:
+ - namespaceSelector:
+ matchLabels:
+ name: frontend-ns # allow traffic only from frontend namespace
+ podSelector:
+ matchLabels:
+ app: frontend # allow traffic only from frontend pods
